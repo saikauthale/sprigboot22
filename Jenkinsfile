@@ -20,13 +20,22 @@ pipeline {
                 sh 'mvn clean package -DskipTests'
             }
         }
-
+stage('Verify Jar') {
+    steps {
+        sh '''
+        pwd
+        ls -lh target
+        '''
+    }
+}
         stage('Build Docker Image') {
-            steps {
-                sh 'docker build -t springbootapi:latest .'
-            }
-        }
-
+    steps {
+        sh '''
+        ls -lh target
+        docker build -t springbootapi:latest .
+        '''
+    }
+}
         stage('Deploy Docker') {
             steps {
                 sh '''
