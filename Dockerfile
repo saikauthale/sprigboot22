@@ -1,8 +1,10 @@
 
-FROM eclipse-temurin:21-alpine
+FROM eclipse-temurin:21-jre
 
 WORKDIR /usr/app
 
-COPY target/springbootapp.jar /usr/app/
+COPY target/springbootapi.jar app.jar
 
-ENTRYPOINT ["java", "-jar", "springbootapp.jar"]
+EXPOSE 8080
+
+ENTRYPOINT ["java","-jar","app.jar"]
