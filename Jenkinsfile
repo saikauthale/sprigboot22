@@ -37,19 +37,21 @@ stage('Verify Jar') {
     }
 }
         stage('Deploy Docker') {
-            steps {
-                sh '''
-                docker stop springbootapi || true
-                docker rm springbootapi || true
+    steps {
+        sh '''
+        docker stop springbootapi || true
+        docker rm springbootapi || true
 
-                docker run -d \
-                  --name springbootapi \
-                  -p 8080:8080 \
-                  springbootapi:latest
-                '''
-            }
-        }
+        # Kill any process using port 8080
+        sudo fuser -k 8080/tcp || true
+
+        docker run -d \
+          --name springbootapi \
+          -p 8080:8080 \
+          springbootapi:latest
+        '''
     }
+}
 
     post {
         success {
