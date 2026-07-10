@@ -1,15 +1,11 @@
 pipeline {
     agent any
 
-    stage('SonarQube Analysis') {
-    steps {
-        withSonarQubeEnv('SonarQube') {
-            sh """
-            ${SCANNER_HOME}/bin/sonar-scanner
-            """
-        }
+    environment {
+        IMAGE_NAME = "springbootapi"
+        CONTAINER_NAME = "springbootapi"
     }
-}
+
     stages {
 
         stage('Checkout') {
@@ -19,50 +15,15 @@ pipeline {
             }
         }
 
-        stage('Clean Workspace') {
-            steps {
-                sh '''
-                rm -rf target || true
-                '''
-            }
-        }
-
-        stage('Verify') {
-            steps {
-                sh '''
-                java -version
-                javac -version
-                mvn -version
-                docker --version
-                '''
-            }
-        }
-
         stage('Build') {
             steps {
                 sh 'mvn clean package -DskipTests'
             }
         }
 
-        stage('SonarQube Analysis') {
-            steps {
-                withSonarQubeEnv('SonarQube') {
-                    sh """
-                    ${SCANNER_HOME}/bin/sonar-scanner \
-                    -Dsonar.projectKey=springbootapi \
-                    -Dsonar.projectName=springbootapi \
-                    -Dsonar.sources=src/main/java \
-                    -Dsonar.java.binaries=target/classes
-                    """
-                }
-            }
-        }
-
         stage('Build Docker Image') {
             steps {
-                sh '''
-                docker build -t springbootapi:latest .
-                '''
+                sh 'docker build -t springbootapi:latest .'
             }
         }
 
@@ -79,16 +40,14 @@ pipeline {
                 '''
             }
         }
-
     }
 
     post {
         success {
-            echo "Pipeline completed successfully."
+            echo 'Pipeline completed successfully.'
         }
-
         failure {
-            echo "Pipeline failed."
+            echo 'Pipeline failed.'
         }
     }
 }
