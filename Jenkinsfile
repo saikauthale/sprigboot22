@@ -8,12 +8,18 @@ pipeline {
             }
         }
 
-        stage('Verify') {
-            steps {
-                sh 'java -version'
-                sh 'mvn -version'
-            }
-        }
+        stage('Check Java Compiler') {
+    steps {
+        sh '''
+        java -version
+        javac -version
+        mvn -version
+        which java
+        which javac
+        echo $JAVA_HOME
+        '''
+    }
+}
 
         stage('Build') {
             steps {
