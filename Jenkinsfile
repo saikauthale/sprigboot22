@@ -47,7 +47,7 @@ stage('Verify Jar') {
 
         docker run -d \
           --name springbootapi \
-          -p 8080:8080 \
+          -p 8081:8080 \
           springbootapi:latest
         '''
     }
