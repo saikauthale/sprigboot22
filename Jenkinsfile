@@ -1,12 +1,15 @@
 pipeline {
     agent any
 
-    environment {
-        SCANNER_HOME = tool 'SonarScanner'
-        IMAGE_NAME = "springbootapi"
-        CONTAINER_NAME = "springbootapi"
+    stage('SonarQube Analysis') {
+    steps {
+        withSonarQubeEnv('SonarQube') {
+            sh """
+            ${SCANNER_HOME}/bin/sonar-scanner
+            """
+        }
     }
-
+}
     stages {
 
         stage('Checkout') {
