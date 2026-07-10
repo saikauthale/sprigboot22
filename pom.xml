@@ -43,11 +43,8 @@
     </dependencies>
 
     <build>
-
-        <finalName>springbootapi</finalName>
-
-        <plugins>
-
+    <finalName>springbootapp</finalName>
+</build>
             <plugin>
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
